@@ -2,7 +2,7 @@ export default {
   install (Vue, options) {
     class HomeService {
       constructor () {
-        this.api = localStorage['REMOTE-IP'] || 'http://127.0.0.1:8888/'        
+        this.api = localStorage['REMOTE-IP'] || 'http://127.0.0.1:8888/'
       }
 
       setapi (url) {
@@ -10,7 +10,7 @@ export default {
         localStorage['REMOTE-IP'] = url
       }
 
-      getapi (cb) {        
+      getapi (cb) {
         cb()
       }
     }
