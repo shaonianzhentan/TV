@@ -4,7 +4,7 @@
     <mu-drawer :open="open" :docked="docked" @close="toggle()">
       <mu-appbar title="VIP视频" />
       <mu-list @itemClick="docked ? '' : toggle()">
-        <mu-list-item title="搜索" />
+        <mu-list-item title="搜索" to="/Search" />
         <mu-list-item title="设置" to="/Setting" />
         <mu-list-item title="关于" to="/About" />
         <mu-list-item v-if="docked" @click.native="open = false" title="Close" />
