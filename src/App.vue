@@ -23,29 +23,54 @@
 </template>
 
 <script>
-  export default {
-    name: 'app',
-    data () {
-      return {
-        open: false,
-        docked: true,
-        IsLoading: false,
-        title: 'VIP视频'
-      }
-    },
-    methods: {
-      loading (flag) {
-        this.IsLoading = flag
-      },
-      setTitle (title) {
-        this.title = title
-      },
-      toggle (flag) {
-        this.open = !this.open
-        this.docked = !flag
+import light from '!raw-loader!muse-ui/dist/theme-default.css'
+import dark from '!raw-loader!muse-ui/dist/theme-dark.css'
+import carbon from '!raw-loader!muse-ui/dist/theme-carbon.css'
+import teal from '!raw-loader!muse-ui/dist/theme-teal.css'
+
+export default {
+  name: 'app',
+  data () {
+    return {
+      open: false,
+      docked: true,
+      IsLoading: false,
+      title: 'VIP视频',
+      themes: {
+        light,
+        dark,
+        carbon,
+        teal
       }
     }
+  },
+  created () {
+    var theme = localStorage['theme']
+    const styleEl = this.getThemeStyle()
+    styleEl.innerHTML = this.themes[theme] || ''
+  },
+  methods: {
+    loading (flag) {
+      this.IsLoading = flag
+    },
+    setTitle (title) {
+      this.title = title
+    },
+    toggle (flag) {
+      this.open = !this.open
+      this.docked = !flag
+    },
+    getThemeStyle () {
+      const themeId = 'muse-theme'
+      let styleEl = document.getElementById(themeId)
+      if (styleEl) return styleEl
+      styleEl = document.createElement('style')
+      styleEl.id = themeId
+      document.body.appendChild(styleEl)
+      return styleEl
+    }
   }
+}
 </script>
 
 <style>
