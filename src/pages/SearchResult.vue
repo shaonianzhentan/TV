@@ -64,9 +64,9 @@ export default {
     },
     show (item) {
       this.isPlay = this.dialog = true
-      this.$http.get(this.api + 'vipvideo?url=' + item.link).then(res => {
-        this.dialog = false
+      this.$http.get(this.api + 'vipvideo/url?url=' + item.link).then(res => {        
         if (this.isPlay) {
+          this.close()
           let playUrl = res.body
           if (playUrl === '') {
             this.topPopup = true
@@ -80,7 +80,7 @@ export default {
           } catch (ex) {
             console.log(playUrl)
           }
-        }
+        }        
         console.log(res.body)
       }).catch(err => {
         console.log(err)
