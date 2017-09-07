@@ -52,6 +52,15 @@ export default {
       } catch (ex) {
         this.list = []
       }
+      this.tj.push('女生怎么这样啊')
+      this.tj.push('朋友都很好啊')
+      this.tj.push('友情果然比爱情靠谱')
+      this.tj.push('不过，有时还好啦')
+      this.tj.push('让我一次写个够')
+      this.tj.push('写点东西挺好的')
+      this.tj.push('程咬金有三板斧，我没有')
+      this.tj.push('序章从这里开始')
+      this.tj.push('啊啊啊啊啊啊啊啊')
     },
     save () {
       localStorage['search-list'] = JSON.stringify(this.list)
@@ -59,10 +68,14 @@ export default {
     search () {
       if (this.key.trim() === '') return
       var key = this.key
-      this.list.push(key)
+      var index = this.list.findIndex((ele) => {
+        return key === ele
+      })
+      if (index < 0) this.list.push(key)
       console.log(this.list)
       this.save()
       this.key = ''
+      this.$router.push({ name: 'SearchResult', query: {key: key} })
     },
     del (index) {
       this.list.splice(index, 1)
@@ -75,6 +88,5 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #Search{padding-top:100px;}
-.search-panel{height:101px;position: fixed;top:60px;width:100%;background:white;z-index:100;}
-
+.search-panel{height:101px;position: fixed;top:64px;width:100%;background:white;z-index:100;}
 </style>

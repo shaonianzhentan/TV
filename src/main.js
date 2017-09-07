@@ -14,13 +14,6 @@ Vue.use(util)
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
 
-import {Alert, Confirm, Toast, Prompt} from 'wc-messagebox'
-import 'wc-messagebox/style.css'
-Vue.use(Alert)
-Vue.use(Confirm)
-Vue.use(Toast)
-Vue.use(Prompt)
-
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

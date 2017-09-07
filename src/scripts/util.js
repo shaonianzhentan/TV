@@ -1,21 +1,12 @@
 export default {
   install (Vue, options) {
-    class HomeService {
+    class API {
       constructor () {
-        this.api = localStorage['REMOTE-IP'] || 'http://127.0.0.1:8888/'
-      }
-
-      setapi (url) {
-        this.api = url
-        localStorage['REMOTE-IP'] = url
-      }
-
-      getapi (cb) {
-        cb()
+        this.api = 'http://jiluxinqing.top:4000'
       }
     }
 
-    let hs = new HomeService()
-    Vue.prototype.HomeService = hs
+    let hs = new API()
+    Vue.prototype.API = hs
   }
 }

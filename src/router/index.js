@@ -4,6 +4,7 @@ import Home from '@/pages/Home'
 import About from '@/pages/About'
 import Setting from '@/pages/Setting'
 import Search from '@/pages/Search'
+import SearchResult from '@/pages/SearchResult'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/Search',
       name: 'Search',
       component: Search
+    },
+    {
+      path: '/SearchResult',
+      name: 'SearchResult',
+      component: SearchResult
     }
   ]
 })
