@@ -10,7 +10,7 @@
         <mu-list-item v-if="docked" @click.native="open = false" title="Close" />
       </mu-list>
     </mu-drawer>
-    <mu-appbar :title="title ">
+    <mu-appbar :title="title" class="navbar">
       <mu-icon-button icon="menu" slot="left" @click="toggle(true)" />
     </mu-appbar>
     <div id="app-progress">
@@ -76,4 +76,6 @@ export default {
 <style>
   #app {height:100%;}
   #app-progress .mu-linear-progress{position: fixed;width:100%;top:56px;background:white;}
+  body{padding-top:60px;}
+  .navbar{position: fixed;top:0;}
 </style>

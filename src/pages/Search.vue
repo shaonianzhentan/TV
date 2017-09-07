@@ -1,32 +1,34 @@
 <template>
-    <div>
+    <div id="Search">
+        <div class="search-panel">
+            <mu-text-field label="输入要搜索的影片" v-model="key" @keyup.enter.native="search" fullWidth labelFloat icon="movie" helpText="支持优酷、乐视、腾讯视频、芒果TV" />
+            <br/><br/>
+            <mu-divider />
+        </div>
+
         <mu-list>
-            <mu-sub-header>程序信息</mu-sub-header>
-            <mu-list-item title="名称" describeText="VIP视频">
-                <mu-icon slot="left" value="inbox" />
+
+            <mu-sub-header>搜索记录</mu-sub-header>
+            <mu-list-item :title="item" v-for="(item,index) in list" :key="index">
+                <mu-avatar color="pinkA200" :style="{'margin-left': '-8px'}" backgroundColor="transparent" slot="leftAvatar">
+                    {{item[0]}}</mu-avatar>
+                <mu-icon-menu slot="right" icon="more_vert" tooltip="操作">
+                    <mu-menu-item title="删除" @click="del(index)" />
+                </mu-icon-menu>
             </mu-list-item>
-            <mu-list-item title="版本" :describeText="ver">
-                <mu-icon slot="left" value="grade" />
-            </mu-list-item>
-            <mu-list-item title="声明" describeText="本程序不提供数据存储，内容均来自网络抓取">
-                <mu-icon slot="left" value="description" />
-            </mu-list-item>
+
         </mu-list>
-        <mu-divider/>
+        <mu-divider inset/>
         <mu-list>
-            <mu-sub-header>联系方式</mu-sub-header>
-            <mu-list-item title="QQ" describeText="635147515" 
-                href="http://sighttp.qq.com/authd?IDKEY=51ee8227c75bf1ef6ca750357cc5594313c4379984863d38" target="_blank">
-                <mu-icon slot="left" value="textsms" />
+
+            <mu-sub-header>推荐</mu-sub-header>
+            <mu-list-item :title="item" v-for="(item,index) in tj" :key="index">
+                <mu-avatar color="pinkA200" :style="{'margin-left': '-8px'}" backgroundColor="transparent" slot="leftAvatar">
+                    {{item[0]}}</mu-avatar>
             </mu-list-item>
-            <mu-list-item title="QQ群" describeText="429569316"
-                href="http://shang.qq.com/wpa/qunwpa?idkey=6c46d4163e7d2180d213c7c5f590a982b961b10a47f1d1b2d511aece389d7aef" target="_blank">
-                <mu-icon slot="left" value="sentiment_very_satisfied" />
-            </mu-list-item>
-            <mu-list-item title="邮箱" describeText="jiluxinqing@qq.com" href="mailto:jiluxinqing@qq.com?subject=VIP视频应用反馈">
-                <mu-icon slot="left" value="drafts" />
-            </mu-list-item>            
+
         </mu-list>
+
     </div>
 </template>
 
@@ -34,7 +36,9 @@
 export default {
   data () {
     return {
-      ver: 'v1.0.0'
+      list: [],
+      tj: [],
+      key: ''
     }
   },
   created () {
@@ -42,12 +46,35 @@ export default {
   },
   methods: {
     init () {
-      this.$emit('title', '关于')
+      this.$emit('title', '搜索')
+      try {
+        this.list = JSON.parse(localStorage['search-list'])
+      } catch (ex) {
+        this.list = []
+      }
+    },
+    save () {
+      localStorage['search-list'] = JSON.stringify(this.list)
+    },
+    search () {
+      if (this.key.trim() === '') return
+      var key = this.key
+      this.list.push(key)
+      console.log(this.list)
+      this.save()
+      this.key = ''
+    },
+    del (index) {
+      this.list.splice(index, 1)
+      this.save()
     }
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style scoped>
+#Search{padding-top:100px;}
+.search-panel{height:101px;position: fixed;top:60px;width:100%;background:white;z-index:100;}
+
 </style>
