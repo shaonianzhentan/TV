@@ -14,14 +14,16 @@
   </center>
 
 
- <mu-popup position="top" :overlay="false" popupClass="demo-popup-top" :open="topPopup">
-    出现错误
-  </mu-popup>
 
- <mu-dialog :open="dialog" title="好朋友提示">
-    正在很努力的去获取播放链接，请骚等。。。预计30秒到达战场
-    <mu-flat-button label="不等了" slot="actions" primary @click="close"/>
+
+
+  <mu-dialog :open="dialog" title="好朋友提示">
+    <p v-for="t in tips" :key="t">{{t}}</p>
+    <mu-flat-button label="不等了" slot="actions" secondary @click="close" />
+      <mu-raised-button label="播放" slot="actions" primary @click="play" v-if='canPlay' />
+    
   </mu-dialog>
+
 
 </div>
 </template>
@@ -35,8 +37,11 @@ export default {
       count: 0,
       isLoading: false,
       dialog: false,
-      topPopup: false,
-      isPlay: false
+      isPlay: false,
+      canPlay: false,
+      playUrl: '',
+      playListAPI: '',
+      tips: []
     }
   },
   activated () {
@@ -63,44 +68,67 @@ export default {
       })
     },
     show (item) {
-      this.isPlay = this.dialog = true
       // 获取播放源
+      this.playListAPI = this.api + 'vipvideo/list?url=' + item.link
+      this.tips = []
+      this.tips.push('正在很努力的获取播放链接，请骚等')
+      this.isPlay = this.dialog = true
+      this.canPlay = false
+      this.tips.push('预计30秒到达战场')
       this.$http.get(this.api + 'vipvideo/url?url=' + item.link).then(res => {
         if (this.isPlay) {
-          this.close()
           let playUrl = res.body
           if (playUrl === '') {
-            this.topPopup = true
+            this.tips.push('别等啦！出现错误啦！')
             return
           }
-          try {
-            window.external.notify(JSON.stringify({
-              type: 0,
-              url: playUrl
-            }))
-          } catch (ex) {
-            console.log(playUrl)
-          }
-          // 获取播放剧集
-          this.$http.get(this.api + 'vipvideo/list?url=' + item.link).then(res => {
-            var data = res.body
-            try {
-              window.external.notify(JSON.stringify({
-                type: 1,
-                list: data
-              }))
-            } catch (ex) {
-              console.log(data)
-            }
-          })
+          this.canPlay = true
+          this.playUrl = playUrl
+          this.tips.push('获取视频成功，点击播放看看咯！')
         }
       }).catch(err => {
         console.log(err)
-        this.topPopup = true
+        this.tips.push('抱歉啦，出现错误了！再试一行不行就真的不行了')
       })
     },
     close () {
       this.isPlay = this.dialog = false
+    },
+    play () {
+      try {
+        this.tips.push('开始进入播放界面')
+        // 使用win10原生播放器
+        window.external.notify(JSON.stringify({
+          type: 0,
+          url: this.playUrl
+        }))
+      } catch (ex) {
+        console.log(this.playUrl)
+      }
+      this.tips.push('获取电视剧的集数（如果有的话）')
+      // 获取播放剧集
+      this.$http.get(this.playListAPI).then(res => {
+        this.tips.push('获取集数成功，正在解析')
+        if (this.isPlay) {
+          var data = res.body
+          if (data.length === 0) {
+            this.tips.push('没有获取到集数')
+            return
+          }
+          this.tips.push('解析成功，正在显示到界面')
+          try {
+            // 将获取到的集数，传到win10界面
+            window.external.notify(JSON.stringify({
+              type: 1,
+              list: data
+            }))
+          } catch (ex) {
+            console.log(data)
+          }
+        }
+      }).catch(() => {
+        this.tips.push('获取集数失败啦！我只能说Sorry咯!')
+      })
     }
   },
   watch: {
@@ -115,4 +143,6 @@ export default {
 </script>
 <style scoped>
 .item{cursor: pointer;}
+
+
 </style>
