@@ -45,9 +45,11 @@ export default {
   created () {
     this.init()
   },
+  activated () {
+    this.$emit('title', '搜索')
+  },
   methods: {
     init () {
-      this.$emit('title', '搜索')
       try {
         this.list = JSON.parse(localStorage['search-list'])
       } catch (ex) {
@@ -67,7 +69,7 @@ export default {
       localStorage['search-list'] = JSON.stringify(this.list)
     },
     search (args) {
-      if (args) this.key = args
+      if (typeof args === 'string') this.key = args
       if (this.key.trim() === '') return
       var key = this.key
       var index = this.list.findIndex((ele) => {

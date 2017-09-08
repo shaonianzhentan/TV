@@ -41,7 +41,7 @@ export default {
       }
     }
   },
-  created () {
+  activated () {
     this.$emit('title', '设置')
   },
   methods: {

@@ -6,18 +6,21 @@
                 <p v-for="t in tips" :key="t">{{t}}</p>
                 <p>计时开始：{{timeout}}秒</p>
             </mu-card-text>
-             <mu-divider />
+            <mu-divider />
             <mu-card-actions>
                 <mu-flat-button label="返回" secondary @click="close" />
+                <mu-flat-button label="重试" @click="init" v-if='isReset' />
                 <mu-flat-button label="播放" primary @click="play" v-if='canPlay' />
             </mu-card-actions>
         </mu-card>
-<mu-list>
-    <mu-list-item :title="item.title" v-for="(item,index) in playList" :key="index"
-    @click.native="show(item.link)">
-      <mu-icon slot="right" value="play_circle_outline"/>
-    </mu-list-item>
-  </mu-list>
+        <mu-list>
+            <template v-for="(item,index) in playList">
+                <mu-list-item :title="item.title" :key="index" @click.native="show(item.link)">
+                    <mu-icon slot="right" value="play_circle_outline" />
+                </mu-list-item>
+                <mu-divider :key="index" />
+            </template>
+        </mu-list>
 
     </div>
 </template>
@@ -34,7 +37,8 @@ export default {
       isPlay: false,
       canPlay: false,
       timeout: 0,
-      timer: null
+      timer: null,
+      isReset: false
     }
   },
   activated () {
@@ -45,23 +49,28 @@ export default {
       this.$emit('title', '播放视频')
       var link = this.$route.query.link
       this.show(link)
-      this.timer = setInterval(() => {
-        this.timeout ++
-      }, 1000)
     },
     show (link) {
+      document.querySelector('.mu-card').scrollIntoView()
       // 获取播放源
       this.playListAPI = this.api + 'vipvideo/list?url=' + link
       this.tips = []
+      this.playList = []
       this.tips.push('正在很努力的获取视频链接，请==')
       this.isPlay = true
+      this.isReset = false
       this.canPlay = false
+      this.timeout = 0
+      this.timer = setInterval(() => {
+        this.timeout ++
+      }, 1000)
       this.tips.push('预计30秒到达战场')
       this.$http.get(this.api + 'vipvideo/url?url=' + link).then(res => {
         if (this.isPlay) {
           let playUrl = res.body
           if (playUrl === '') {
-            this.tips.push('别等啦！出现错误啦！')
+            this.tips.push('别等啦！没有找到视频链接哇！')
+            this.stop()
             return
           }
           this.canPlay = true
@@ -89,6 +98,7 @@ export default {
       }).catch(err => {
         console.log(err)
         this.tips.push('抱歉啦，出现错误了！再试一行不行就真的不行了')
+        this.isReset = true
         this.stop()
       })
     },

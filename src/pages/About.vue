@@ -37,7 +37,7 @@ export default {
       ver: 'v1.0.0'
     }
   },
-  created () {
+  activated () {
     this.init()
   },
   methods: {
