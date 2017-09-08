@@ -82,7 +82,7 @@ export default {
             console.log(playUrl)
           }
           // 获取播放剧集
-          this.$http.get(this.api + 'vipvideo/list/url?url=' + item.link).then(res => {
+          this.$http.get(this.api + 'vipvideo/list?url=' + item.link).then(res => {
             var data = res.body
             try {
               window.external.notify(JSON.stringify({
@@ -94,7 +94,6 @@ export default {
             }
           })
         }
-        console.log(res.body)
       }).catch(err => {
         console.log(err)
         this.topPopup = true
