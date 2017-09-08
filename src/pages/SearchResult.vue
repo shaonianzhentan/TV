@@ -64,6 +64,7 @@ export default {
     },
     show (item) {
       this.isPlay = this.dialog = true
+      // 获取播放源
       this.$http.get(this.api + 'vipvideo/url?url=' + item.link).then(res => {
         if (this.isPlay) {
           this.close()
@@ -80,6 +81,18 @@ export default {
           } catch (ex) {
             console.log(playUrl)
           }
+          // 获取播放剧集
+          this.$http.get(this.api + 'vipvideo/list/url?url=' + item.link).then(res => {
+            var data = res.body
+            try {
+              window.external.notify(JSON.stringify({
+                type: 1,
+                list: data
+              }))
+            } catch (ex) {
+              console.log(data)
+            }
+          })
         }
         console.log(res.body)
       }).catch(err => {
