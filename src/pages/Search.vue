@@ -1,6 +1,6 @@
 <template>
     <div id="Search">
-        <div class="search-panel">
+        <div class="search-panel mu-card">
             <mu-text-field label="输入要搜索的影片" v-model="key" @keyup.enter.native="search" fullWidth labelFloat icon="movie" helpText="支持优酷、乐视、腾讯视频、芒果TV" />
             <br/><br/>
             <mu-divider />
@@ -9,7 +9,8 @@
         <mu-list>
 
             <mu-sub-header>搜索记录</mu-sub-header>
-            <mu-list-item :title="item" v-for="(item,index) in list" :key="index">
+            <mu-list-item :title="item" v-for="(item,index) in list" :key="index" 
+            @click.native="search(item)">
                 <mu-avatar color="pinkA200" :style="{'margin-left': '-8px'}" backgroundColor="transparent" slot="leftAvatar">
                     {{item[0]}}</mu-avatar>
                 <mu-icon-menu slot="right" icon="more_vert" tooltip="操作">
@@ -65,7 +66,8 @@ export default {
     save () {
       localStorage['search-list'] = JSON.stringify(this.list)
     },
-    search () {
+    search (args) {
+      if (args) this.key = args
       if (this.key.trim() === '') return
       var key = this.key
       var index = this.list.findIndex((ele) => {
@@ -88,5 +90,5 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #Search{padding-top:100px;}
-.search-panel{height:101px;position: fixed;top:64px;width:100%;background:white;z-index:100;}
+.search-panel{height:101px;position: fixed;top:56px;width:100%;z-index:100;}
 </style>
