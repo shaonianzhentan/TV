@@ -6,14 +6,14 @@
                 <mu-icon slot="left" value="inbox" />
             </mu-list-item>
             <mu-list-item title="版本" :describeText="ver">
-                <mu-icon slot="left" value="grade" />
+                <mu-icon slot="left" value="format_list_numbered" />
             </mu-list-item>
             <mu-list-item title="声明" describeText="本程序不提供数据存储，内容均来自网络抓取">
                 <mu-icon slot="left" value="description" />
             </mu-list-item>
-            <mu-list-item title="评分" describeText="我 VIP视频 打分"
-            href="ms-windows-store://review/?ProductId=9pcgrgcp93d7">
-                <mu-icon slot="left" value="description" />
+            <mu-list-item title="评分" describeText="我，VIP视频，打分"
+                href="ms-windows-store://review/?ProductId=9pcgrgcp93d7">
+                <mu-icon slot="left" value="grade" />
             </mu-list-item>            
         </mu-list>
         <mu-divider/>

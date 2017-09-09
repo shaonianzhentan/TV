@@ -43,6 +43,7 @@ export default {
   },
   activated () {
     this.$emit('title', '设置')
+    if (localStorage['theme']) this.theme = localStorage['theme']
   },
   methods: {
     changeTheme (theme) {
