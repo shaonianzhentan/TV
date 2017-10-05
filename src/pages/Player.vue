@@ -21,7 +21,6 @@
                 <mu-divider :key="index" />
             </template>
         </mu-list>
-        <iframe id="ff"></iframe>
     </div>
 </template>
 
@@ -113,7 +112,8 @@ export default {
       this.isReset = false
       this.canPlay = false
       this.timeout = 0
-      this.ff = document.getElementById('ff')
+
+
       this.ff.src = 'https://vip.api.47ks.com/cp0309/?v=' + link
       this.ff.onload = () => {
         /*
