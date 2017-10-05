@@ -38,10 +38,7 @@ export default {
       if (key === sessionStorage['searchResult-Key']) return
       sessionStorage['searchResult-Key'] = key
       this.list = []
-      this.search('youku', key)
-      this.search('qq', key)
-      this.search('le', key)
-      this.search('mg', key)
+      this.search('vipsp', key)
       this.isLoading = true
     },
     search (type, key) {
@@ -59,7 +56,7 @@ export default {
   },
   watch: {
     count (newVal, oldVal) {
-      if (newVal >= 4) {
+      if (newVal >= 1) {
         this.isLoading = false
         this.count = 0
       }
@@ -69,6 +66,4 @@ export default {
 </script>
 <style scoped>
 .item{cursor: pointer;}
-
-
 </style>
