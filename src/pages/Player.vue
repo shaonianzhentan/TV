@@ -1,7 +1,6 @@
 <template>
     <div>
         <mu-card>
-
             <mu-card-text>
                 <p v-for="t in tips" :key="t">{{t}}</p>
                 <p>计时开始：{{timeout}}秒</p>
